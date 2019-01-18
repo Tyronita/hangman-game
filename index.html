@@ -1,46 +1,29 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <style>
-            #guessed-letters {
-                min-width: 15%;
-                width: 20%;
-                border: 1px #ccc dashed;
-                padding: 5px;
-            }
-
-            #guessed-letters h4 {
-                text-decoration: underline;
-                margin: 0px;
-                padding-left: 10px;
-            }
-
-            #guessed-letters ul {
-                list-style: square;
-                text-align: left;
-            }
-        </style>
+        <title>Hangman Game</title>
     </head>
     <body>
-        <div id="round-process">
-            <button id="reset">Reset</button>
-            <!-- Puzzle Word -->
-            <h3 id="puzzles"></h3>
-            <!-- Guesses Remaining and Status Message -->
-            <h3 id="guesses"></h3>
+        
+        <h2>New Game</h2>
+        <form id="createGame">
+            <label>Name:
+                <input type="text" placeholder="Your name..." name="playerName">
+            </label>
+                <br>
+            <p>Difficulty:</p>
+            <label>
+                Easy<input type="radio" value="easy" name="difficulty" checked="true">
+                Medium<input type="radio" value="medium" name="difficulty">
+                Hard<input type="radio" value="hard" name="difficulty">
+            </label>
+                <br>
+            <input type="button" value="Start Game" name="startGame">
+        </form>
 
-            <input type="checkbox" name="" id="">
-
-            <div id="guessed-letters">
-                <h4>Guessed letters:</h4>
-                <ul>
-                    <!-- Guessed Letters Displayed Here -->
-                </ul>
-            </div>
-        </div>
-        <script src="requests.js"></script>
-        <script src="hangman.js"></script>
-        <script src="app-functions.js"></script>
-        <script src="app.js"></script>
+        <script src="js/requests.js"></script>
+        <script src="js/hangman.js"></script>
+        <script src="js/game-functions.js"></script>
+        <script src="js/index.js"></script>
     </body>
 </html>

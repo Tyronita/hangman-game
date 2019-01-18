@@ -5,6 +5,6 @@ const getPuzzle = async (wordCount) => {
         const data = await response.json()
         return data.puzzle
     } else {
-        throw new Error('Unable to get puzzle.')
+        throw new Error(`Unable to get puzzle. Error ${response.status}`)
     }
 }

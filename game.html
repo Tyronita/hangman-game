@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        #guessed-letters {
+            min-width: 15%;
+            width: 20%;
+            border: 1px #ccc dashed;
+            padding: 5px;
+        }
+
+        #guessed-letters h4 {
+            text-decoration: underline;
+            margin: 0px;
+            padding-left: 10px;
+        }
+
+        #guessed-letters ul {
+            list-style: square;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="game-ui">
+        <button id="reset">Quit Game</button>
+        <span id="round-number"></span>
+    </div>
+    <hr>
+    <div id="round-process">
+        <span id="round"></span>
+        <!-- Puzzle Word -->
+        <h3 id="puzzles"></h3>
+        <!-- Guesses Remaining and Status Message -->
+        <h3 id="guesses"></h3>
+
+        <div id="guessed-letters">
+            <h4>Guessed letters:</h4>
+            <ul>
+                <!-- Guessed Letters Displayed Here -->
+            </ul>
+        </div>
+        
+        <br>
+        <div id="next-stage">
+
+        </div>
+    </div>
+
+    <script src="js/hangman.js"></script>
+    <script src="js/game-functions.js"></script>
+    <script src="js/game.js"></script>
+</body>
+
+</html>
