@@ -1,0 +1,27 @@
+#guessed-letters {
+    min-width: 15%;
+    width: 20%;
+    border: 1px #ccc dashed;
+    padding: 5px;
+}
+
+#guessed-letters h4 {
+    text-decoration: underline;
+    margin: 0px;
+    padding-left: 10px;
+    text-align: center;
+}
+
+#guessed-letters section {
+    margin: 10px;
+    display: grid;
+    grid-template-columns: repeat( auto-fit, minmax(25px, 1fr) );
+    grid-gap: 10px;
+}
+
+#guessed-letters section span {
+    padding: 5px;
+    background: #eee;
+    display: inline-block;
+    text-align: center;
+}

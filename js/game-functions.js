@@ -42,7 +42,11 @@ const activateRounds = () => {
             
             savedGameData.rounds = savedGameData.rounds.map((round) => {
                 const word = round.word
-                const activatedRound = new Hangman(word, round.remainingGuesses)
+                const remainingGuesses = round.remainingGuesses
+                const activatedRound = new Hangman(word, remainingGuesses)
+                // Save hangman created properties
+                activatedRound.guessedLetters = round.guessedLetters
+
                 return activatedRound
             })
         } else {

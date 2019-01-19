@@ -13,8 +13,8 @@ window.addEventListener('keypress', (e) => {
     const regex = /^[a-zA-Z]*$/
     if (regex.test(guess)) {
         activeRound.makeGuess(guess)
-        activeRound.renderRoundDOM()
         saveGame(game)
+        activeRound.renderRoundDOM()
     }
 })
 

@@ -12,8 +12,6 @@ class Hangman {
 
         if (isFinished) {
             this.status = 'finished'
-            game.activeRoundNum += 1
-            activeRound = game.rounds[game.activeRoundNum]
         }
         saveGame(game)
     }
@@ -75,7 +73,7 @@ class Hangman {
         guessedLettersList.innerHTML = ''
 
         this.guessedLetters.forEach((letter) => {
-            const listEl = document.createElement('li')
+            const listEl = document.createElement('span')
             listEl.textContent = letter
             guessedLettersList.appendChild(listEl)
         })
@@ -84,13 +82,18 @@ class Hangman {
         const nextActionButton = document.createElement('button')
         if (this.status === 'finished' || this.status === 'failed') {
 
+            // If round is finished 
             if (this.status === 'finished') {
                 nextActionButton.textContent = 'Next Round'
-                // CHanges button id for event listener on game.js
                 nextActionButton.addEventListener('click', (e) => {
-
+                    game.activeRoundNum += 1
+                    saveGame(game)
+                    activeRound = game.rounds[game.activeRoundNum]
+                    activeRound.renderRoundDOM()
                 })
-            } else if (this.status === 'failed') {
+            }
+            // If player has ran out of lives and failed
+            else if (this.status === 'failed') {
                 nextActionButton.textContent = 'Restart Game?'
                 nextActionButton.addEventListener('click', (e) => {
                     location.assign('index.html')
