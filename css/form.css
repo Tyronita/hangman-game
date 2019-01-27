@@ -1,0 +1,69 @@
+/* The create game form */
+
+body {
+    background: linear-gradient( rgb(21, 79, 204), rgb(0, 153, 255));
+    color: #fff;
+    text-shadow: 2px 2px  #323232;
+}
+
+#container {
+    max-width: 60%;
+    margin: auto;
+}
+
+form{
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 15px;
+}
+
+#difficulty {
+    margin-top: 10px; 
+}
+
+input[type="text"] {
+    width: 260px;
+    padding: 5px;
+    border-radius: 4px;
+    border: none;
+    background: rgba(255,255,255, 0.95)
+}
+
+#difficulty label {
+    padding: 6px;
+    border-radius: 4px;
+    margin-right: 4px;  
+    
+}
+
+.easy{
+    background: rgb(1, 153, 47);
+}
+
+.medium {
+    background: rgb(245, 228, 0);
+}
+
+.hard{
+    background: red;
+}
+
+input[type="button"] {
+    padding: 5px;
+    border-radius: 4px;
+    border: none;
+    background: rgb(113, 5, 185);
+    color: #ffffff;
+    text-shadow: 1px 1px  #d65fd0;
+    opacity: 0.9;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+input[type="button"]:hover {
+    opacity: 1;
+    background: rgb(55, 1, 202);
+    text-shadow: 1px 1px  #26a8ff;
+    transition-duration: 1s;
+}

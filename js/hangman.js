@@ -52,19 +52,12 @@ class Hangman {
     }
     renderRoundDOM(){
         this.getStatus()
-        saveGame(game)
 
-        const nextStage = document.querySelector('#next-stage')
-        nextStage.innerHTML = ''
-
-        const roundNumberEl = document.querySelector('#round-number')
         const puzzles = document.querySelector('#puzzles')
         const guesses = document.querySelector('#guesses')
         const guessedLetters = document.querySelector('#guessed-letters')
         const guessedLettersList = guessedLetters.children[1]
 
-        // Rendering the round number out of total rounds
-        roundNumberEl.textContent = getRoundNumberMessage(game)
         // rendering the puzzle
         puzzles.textContent = this.puzzle
         guesses.textContent = this.statusMessage
@@ -77,31 +70,6 @@ class Hangman {
             listEl.textContent = letter
             guessedLettersList.appendChild(listEl)
         })
-
-        // If round is finished(won) or failed
-        const nextActionButton = document.createElement('button')
-        if (this.status === 'finished' || this.status === 'failed') {
-
-            // If round is finished 
-            if (this.status === 'finished') {
-                nextActionButton.textContent = 'Next Round'
-                nextActionButton.addEventListener('click', (e) => {
-                    game.activeRoundNum += 1
-                    saveGame(game)
-                    activeRound = game.rounds[game.activeRoundNum]
-                    activeRound.renderRoundDOM()
-                })
-            }
-            // If player has ran out of lives and failed
-            else if (this.status === 'failed') {
-                nextActionButton.textContent = 'Restart Game?'
-                nextActionButton.addEventListener('click', (e) => {
-                    location.assign('index.html')
-                })
-            }
-            nextStage.appendChild(nextActionButton)
-
-        }
 
     }
 }

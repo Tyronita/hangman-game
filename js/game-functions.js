@@ -33,39 +33,42 @@ const resetGame = () => {
 
     Sorry if you don't understand this later Evan
 */
-const activateRounds = () => {
-    const savedGameData = JSON.parse(localStorage.getItem('game'))
-    const needsReactivating = savedGameData.rounds.every((round) => typeof round.word !== 'string')
-    if (savedGameData !== undefined) {
 
-        if (needsReactivating) {
-            
-            savedGameData.rounds = savedGameData.rounds.map((round) => {
-                const word = round.word
-                const remainingGuesses = round.remainingGuesses
-                const activatedRound = new Hangman(word, remainingGuesses)
-                // Save hangman created properties
-                activatedRound.guessedLetters = round.guessedLetters
-
-                return activatedRound
-            })
-        } else {
-            // Making every round a hangman object
-            savedGameData.rounds = savedGameData.rounds.map((round) => {
-                const word = round.word.toLowerCase().split('')
-                const activatedRound = new Hangman(word, round.guessCount)
-                return activatedRound
-            })
-        }
-
-        saveGame(savedGameData)
-        // Return game with activated hangman objects
-        return savedGameData
-    } else {
-        // If no JSON data found send back to menu
+const fetchGameData = () => {
+    const gameData = JSON.parse(localStorage.getItem('game'))
+    if (!gameData) {
         location.assign('index.html')
     }
+    return gameData
+}
 
+const makeRoundsHangmanObject = (gameData) => {
+    // Check to see if word has already been activated - activated rounds have been split
+    const needsReactivating = gameData.rounds.every((round) => typeof round.word !== 'string')
+
+    if (needsReactivating) {
+         // Making every round a hangman object again
+        gameData.rounds = gameData.rounds.map((round) => {
+            const word = round.word
+            const remainingGuesses = round.remainingGuesses
+            const activatedRound = new Hangman(word, remainingGuesses)
+            // Save hangman created properties
+            activatedRound.guessedLetters = round.guessedLetters
+
+            return activatedRound
+        })
+
+    } else {
+        // Making every round a hangman object
+        gameData.rounds = gameData.rounds.map((round) => {
+            const word = round.word.toLowerCase().split('')
+            const activatedRound = new Hangman(word, round.guessCount)
+            return activatedRound
+        })
+    }
+
+    // Return game with activated hangman objects
+    return gameData
 }
 
 const createRound = async (wordCount, guessCount) => {
@@ -78,31 +81,28 @@ const createRound = async (wordCount, guessCount) => {
 
 const createGame = (game) => {
     const configureGame = async () => {
-        // Easy
+        // Set up the amount of guesses for each round and the word count for each round 
+        let wordCount, guessCount, roundCount
+        // easy
         if (game.difficulty === 'easy') {
-            for (let i = 0; i < 5; i++) {
-                await createRound(1, 10).then((round) => {
-                    game.rounds.push(round)
-                }).catch((err) => {
-                    console.log(err)
-                })
-            }
-        } else if (game.difficulty === 'medium') {
-            for (let i = 0; i < 10; i++) {
-                await createRound(2, 8).then((round) => {
-                    game.rounds.push(round)
-                }).catch((err) => {
-                    console.log(err)
-                })
-            }
-        } else if (game.difficulty === 'hard') {
-            for (let i = 0; i < 20; i++) {
-                await createRound(3, 4).then((round) => {
-                    game.rounds.push(round)
-                }).catch((err) => {
-                    console.log(err)
-                })
-            }
+            roundCount = 3, wordCount = 1, guessCount = 10
+        }
+        // medium
+        else if (game.difficulty === 'medium') {
+            roundCount = 5, wordCount = 2, guessCount = 7
+        }
+        // Hard
+        else if (game.difficulty === 'hard') {
+            roundCount = 50, wordCount = 3, guessCount = 4
+        }
+
+        // Generate the rounds based on the stat diificulty reassignments above
+        for (let i = 0; i < roundCount; i++) {
+            await createRound(wordCount, guessCount).then((round) => {
+                game.rounds.push(round)
+            }).catch((err) => {
+                console.log(err)
+            })
         }
     }
     configureGame().then(() => {
@@ -115,4 +115,76 @@ const getRoundNumberMessage = (game) => {
     const totalRoundsNum = game.rounds.length
     const activeRoundNum = game.activeRoundNum + 1
     return `Round: ${activeRoundNum}/${totalRoundsNum}`
+}
+
+const getRoundWinRate = (rounds) => {
+
+    // Checking the percentage of won rounds
+    let totalRounds = game.rounds.length, roundsWon = 0
+    game.rounds.forEach((round) => {
+        if (round.status === 'finished') {
+            roundsWon++
+        }
+    })
+
+    return ((roundsWon / totalRounds) * 100).toFixed(2)
+}
+
+const getLetterGuessRate = (rounds) => {
+    // Checking the percentage of letters guessed correcly
+    let totalLetters = 0, correctGuessedLetters = 0
+    rounds.forEach((round) => {
+        totalLetters += round.word.length
+        round.word.forEach((letter) => {
+            if (round.guessedLetters.includes(letter)) {
+                correctGuessedLetters += 1
+            }
+        })
+
+        return (correctGuessedLetters / totalLetters) * 100
+    })
+}
+
+const renderGameDOM = (currentRound, game) => {
+    const nextRoundBtn = document.querySelector('#next-round')
+    nextRoundBtn.style.display = "none"
+
+    const roundNumberEl = document.querySelector('#round-number')
+    const difficultyEl = document.querySelector('#game-difficulty')
+
+    roundNumberEl.textContent = getRoundNumberMessage(game)
+    difficultyEl.textContent = `Difficulty: ${game.difficulty}`
+
+    // Render the individual round
+    currentRound.renderRoundDOM()
+
+    // Boolean to check if the current round is the last round
+    const currentRoundOver = currentRound.status === 'finished' || currentRound.status === 'failed'
+    const gameOver = game.rounds.length <= game.rounds.indexOf(currentRound) + 1 && currentRoundOver
+
+    if (gameOver) {
+
+        const modal = document.querySelector('#myModal');
+        modal.style.display = "block";
+
+        // Get the <span> element that closes the modal
+        const closeModal = document.querySelector(".close");
+
+        // When the user clicks on <span> (x), close the modal
+        closeModal.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        const finalMessage = document.querySelector('#final-message')
+        finalMessage.textContent = getRoundWinRate(game)
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    } else if (currentRoundOver) {
+        nextRoundBtn.style.display = "block"
+    }  
 }

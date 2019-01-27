@@ -2,24 +2,36 @@
 <html>
     <head>
         <title>Hangman Game</title>
+        <link rel="stylesheet" type="text/css" href="css/form.css">
+        <link rel="stylesheet" type="text/css" href="css/main.css">
     </head>
     <body>
-        
-        <h2>New Game</h2>
+
+        <div id="container">
+
+        <h2>Start New Game</h2>
         <form id="createGame">
-            <label>Name:
-                <input type="text" placeholder="Your name..." name="playerName">
+            <label id="name">Name:
+                <input type="text" placeholder="Player name..." name="playerName">
             </label>
-                <br>
-            <p>Difficulty:</p>
-            <label>
-                Easy<input type="radio" value="easy" name="difficulty" checked="true">
-                Medium<input type="radio" value="medium" name="difficulty">
-                Hard<input type="radio" value="hard" name="difficulty">
-            </label>
-                <br>
+        
+            <div id="difficulty">
+                Difficulty:
+                <label class="easy">
+                    Easy<input type="radio" value="easy" name="difficulty" checked="true">
+                </label>
+                <label class="medium">
+                    Medium<input type="radio" value="medium" name="difficulty">
+                </label>
+                <label class="hard">
+                    Hard<input type="radio" value="hard" name="difficulty">
+                </label>
+            </div>
+            <br>
             <input type="button" value="Start Game" name="startGame">
         </form>
+        
+        </div>
 
         <script src="js/requests.js"></script>
         <script src="js/hangman.js"></script>

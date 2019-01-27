@@ -1,27 +1,100 @@
-#guessed-letters {
-    min-width: 15%;
-    width: 20%;
-    border: 1px #ccc dashed;
+/* difficulty class is an atrribute of the body tag */
+.easy{
+    background: linear-gradient(to top right, rgb(23, 216, 65), rgb(19, 207, 44));
+}
+
+.medium {
+    background: linear-gradient(to top right, rgb(212, 157, 4), rgb(234, 255, 0));
+}
+
+.hard {
+    background: linear-gradient( rgb(211, 96, 43), rgb(255, 0, 0));
+}
+
+#container {
+    max-width: 90%;
+    margin: auto;
+}
+
+#game-progress-ui {
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.2);
     padding: 5px;
-}
-
-#guessed-letters h4 {
-    text-decoration: underline;
-    margin: 0px;
-    padding-left: 10px;
-    text-align: center;
-}
-
-#guessed-letters section {
-    margin: 10px;
+    color: #000;
     display: grid;
-    grid-template-columns: repeat( auto-fit, minmax(25px, 1fr) );
-    grid-gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 15%;
+    text-align: center;
 }
 
-#guessed-letters section span {
+#game-progress-ui button, #game-progress-ui span {
+    border-radius: 4px;
+    border: none;
     padding: 5px;
-    background: #eee;
-    display: inline-block;
-    text-align: center;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+#game-progress-ui button {
+    background: rgba(255, 76, 76, 0.8);
+    opacity: 0.9;
+    color: aliceblue;
+    text-shadow: 3px 2px blue;
+    cursor: pointer;
+    transition-duration: 0.2s;
+}
+
+#game-progress-ui button:hover {
+    background: rgba(255, 0, 0, 0.9);
+    color: yellow;
+    opacity: 1;
+}
+
+
+#game-progress-ui span {
+    background: rgba(255, 255, 255, 0.2);
+    text-shadow: 1px 1px #fff;
+}
+
+/* Modal Content - focuses on pop up box */
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    font-size: 1.4em;
+    background-color: #fefefe;
+    border: blue 5px solid;
+    border-radius: 10px;
+    margin: auto;
+    padding: 20px;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
 }
