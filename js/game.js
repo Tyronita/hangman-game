@@ -1,8 +1,8 @@
 // Fetches game data from local storage 
-const gameData = fetchGameData()
+const game = fetchGameData()
 
-// Make every round a Hanmgman constructor - hangman methods lost in stringifid conversions
-const game = makeRoundsHangmanObject(gameData) 
+// Make the word from every round into a hangman object
+game.rounds = configureRounds(game.rounds) 
 
 // game.rounds[game.activeRoundNum] - This is an active round
 let activeRound = game.rounds[game.activeRoundNum]

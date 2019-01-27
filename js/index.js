@@ -1,3 +1,9 @@
+// If there is a game in progress
+const previousData = fetchGameData()
+if (previousData) {
+    
+}
+
 resetGame() // Reset previously saved information
 
 let newGame = {
