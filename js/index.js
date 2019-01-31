@@ -1,12 +1,11 @@
-// If there is a game in progress
 const previousData = fetchGameData()
+
+// If there is a game already saved in localStorage
 if (previousData) {
-    
+    showModal() // Shows model content with prompt to start new game
 }
 
-resetGame() // Reset previously saved information
-
-let newGame = {
+const newGame = {
     rounds: [],
     difficulty: null,
     playerName: null,

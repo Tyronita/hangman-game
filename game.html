@@ -8,14 +8,13 @@
 </head>
 
 <body>
-
     <div id="container">
         <!-- Overall game UI -->
-        <div id="game-progress-ui">
+        <header id="game-progress-ui">
             <button id="reset">Quit Game</button>
             <span id="round-number"></span>
             <span id="game-difficulty"></span>
-        </div>
+        </header>
 
         <!-- Current round displayal -->
         <div id="round">
@@ -27,9 +26,9 @@
         
             <div id="guessed-letters">
                 <h4>Guessed letters:</h4>
-                <section>
+                <ul>
                     <!-- Guessed Letters Displayed Here -->
-                </section>
+                </ul>
             </div>
         
             <br>
@@ -39,18 +38,20 @@
             <!-- The Modal (darkened unfocused background) -->
             <div id="myModal" class="modal">
                 <!-- Modal content(Win message) -->
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <!-- Game Over message -->
-                    <p id="final-message"></p>
-                    <button id="next-game">Next game</button>
-                </div>
+                <section class="modal-content">
+                    <div class="game-over-content">
+                        <!-- Game Over message -->
+                        <p id="final-message"></p>
+                        <button id="next-game">Next game</button>
+                    </div>
+                </section>
             </div>
             
         </div>
     </div>
 
     <script src="js/hangman.js"></script>
+    <script src="js/app-functions.js"></script>
     <script src="js/game-functions.js"></script>
     <script src="js/game.js"></script>
 </body>

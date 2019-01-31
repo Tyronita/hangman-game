@@ -1,53 +1,3 @@
-// Generate Random Number between two bounds
-const randomInt = (min, max) => min + Math.floor(Math.random() * (max - min)) + 1
-
-// Saves the gameData in local Storage
-const saveGame = (game) => {
-    const gameData = JSON.stringify(game)
-    localStorage.setItem('game', gameData)
-}
-
-// Wipes the gamedata in local storage
-const resetGame = () => {
-    localStorage.removeItem('game')
-}
-
-const fetchGameData = () => {
-    const gameData = JSON.parse(localStorage.getItem('game'))
-    if (!gameData) {
-        location.assign('index.html')
-    }
-    return gameData
-}
-
-const configureRounds = (rounds) => {
-    let hangmanRounds
-    // If Hangman rounds have been previously configured
-    if (rounds.every(round => typeof round === 'array')) {
-        hangmanRounds = rounds.map(round => {
-            const hangmanRound = new Hangman(round.word)
-            hangmanRound.remainingGuesses = round.remainingGuesses
-            hangmanRound.status = round.status
-            hangmanRound.guessedLetters = round.guessedLetters
-            return hangmanRound
-        })
-    } 
-    // If on redirect from index.html(create game page)
-    else {
-        hangmanRounds = rounds.map(puzzleWord => {
-            const hangmanRound = new Hangman(puzzleWord)
-            hangmanRound.remainingGuesses = randomInt(puzzleWord.length-2, puzzleWord.length + 1)
-            return hangmanRound
-        })
-    }
-    return hangmanRounds
-}
-
-// const createRound = async (wordCount) => {
-//     const puzzle = await getPuzzle(wordCount)
-//     return await puzzle
-// }
-
 const createGame = (game) => {
     const generatePuzzles = async () => {
         // Set up the amount of guesses for each round and the word count for each round 
@@ -81,6 +31,45 @@ const createGame = (game) => {
     })
 }
 
+const configureRounds = (rounds) => {
+    let hangmanRounds
+    // If Hangman rounds have been previously configured to the hangman object
+    if (rounds.every(round => Array.isArray(round.word))) { // Check if every round.word is an array
+        hangmanRounds = rounds.map(round => {
+            const hangmanRound = new Hangman(round.word)
+            hangmanRound.remainingGuesses = round.remainingGuesses
+            hangmanRound.status = round.status
+            hangmanRound.guessedLetters = round.guessedLetters
+            return hangmanRound
+        })
+    }
+    // If on redirect from index.html(create game page) // new game
+    else {
+        hangmanRounds = rounds.map(puzzleWord => {
+            const hangmanRound = new Hangman(puzzleWord)
+            let guessCount
+            switch (game.difficulty) {
+                case 'easy':
+                    guessCount = puzzleWord.length
+                    break;
+                case 'medium':
+                    guessCount = Math.ceil(puzzleWord.length / 2)
+                    break;
+                case 'hard':
+                    guessCount = Math.floor(puzzleWord.length / 3)
+                    break;
+                default:
+                    break;
+            }
+            // Generate a rounds remainingGuesses property based on its length, difficulty and a random interval of 2
+            hangmanRound.remainingGuesses = randomInt(guessCount - 2, guessCount + 2)
+            return hangmanRound
+        })
+    }
+    return hangmanRounds
+}
+
+
 const getRoundNumberMessage = (game) => {
     const totalRoundsNum = game.rounds.length
     const activeRoundNum = game.activeRoundNum + 1
@@ -90,14 +79,14 @@ const getRoundNumberMessage = (game) => {
 const getRoundWinRate = (rounds) => {
 
     // Checking the percentage of won rounds
-    let totalRounds = game.rounds.length, roundsWon = 0
-    game.rounds.forEach((round) => {
+    let totalRounds = rounds.length, roundsWon = 0
+    rounds.forEach((round) => {
         if (round.status === 'finished') {
             roundsWon++
         }
     })
 
-    return ((roundsWon / totalRounds) * 100).toFixed(2)
+    return ((roundsWon / totalRounds) * 100).toFixed(1)
 }
 
 const getLetterGuessRate = (rounds) => {
@@ -111,8 +100,8 @@ const getLetterGuessRate = (rounds) => {
             }
         })
 
-        return (correctGuessedLetters / totalLetters) * 100
     })
+    return ((correctGuessedLetters / totalLetters) * 100).toFixed(1)
 }
 
 const renderGameDOM = (currentRound, game) => {
@@ -134,26 +123,10 @@ const renderGameDOM = (currentRound, game) => {
 
     if (gameOver) {
 
-        const modal = document.querySelector('#myModal');
-        modal.style.display = "block";
-
-        // Get the <span> element that closes the modal
-        const closeModal = document.querySelector(".close");
-
-        // When the user clicks on <span> (x), close the modal
-        closeModal.onclick = function () {
-            modal.style.display = "none";
-        }
-
-        const finalMessage = document.querySelector('#final-message')
-        finalMessage.textContent = getRoundWinRate(game)
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
+        showModal()
+        const gameOverMsg = document.querySelector('#final-message')
+        gameOverMsg.textContent = `${game.playerName} guessed ${getRoundWinRate(game.rounds)}% of the words and ${getLetterGuessRate(game.rounds)}% of letters!`
+        
     } else if (currentRoundOver) {
         nextRoundBtn.style.display = "block"
     }  

@@ -6,35 +6,50 @@
         <link rel="stylesheet" type="text/css" href="css/main.css">
     </head>
     <body>
-
         <div id="container">
 
-        <h2>Start New Game</h2>
-        <form id="createGame">
-            <label id="name">Name:
-                <input type="text" placeholder="Player name..." name="playerName">
-            </label>
+            <h2>Start New Game</h2>
+            <form id="createGame">
+                <label id="name">Name:
+                    <input type="text" placeholder="Player name..." name="playerName">
+                </label>
+            
+                <div id="difficulty">
+                    Difficulty:
+                    <label class="easy">
+                        Easy<input type="radio" value="easy" name="difficulty" checked="true">
+                    </label>
+                    <label class="medium">
+                        Medium<input type="radio" value="medium" name="difficulty">
+                    </label>
+                    <label class="hard">
+                        Hard<input type="radio" value="hard" name="difficulty">
+                    </label>
+                </div>
+                <br>
+                <input type="button" value="Start Game" name="startGame">
+            </form>
         
-            <div id="difficulty">
-                Difficulty:
-                <label class="easy">
-                    Easy<input type="radio" value="easy" name="difficulty" checked="true">
-                </label>
-                <label class="medium">
-                    Medium<input type="radio" value="medium" name="difficulty">
-                </label>
-                <label class="hard">
-                    Hard<input type="radio" value="hard" name="difficulty">
-                </label>
-            </div>
-            <br>
-            <input type="button" value="Start Game" name="startGame">
-        </form>
-        
+        </div>
+
+        <!-- Prompt to continue saved game -->
+        <!-- The Modal (darkened unfocused background) -->
+        <div id="myModal" class="modal">
+            <!-- Modal content(Win message) -->
+            <section class="modal-content">
+                <div class="game-in-progress">
+                    <p>Currently there is a game in process. Do you want to finish the game?</p>
+                    <div class="options">
+                        <button onclick="resetGame()" class="closeModal">&times;</button>
+                        <button type="submit" onclick="location.assign('/game.html')" class="closeModal">&#10004</button>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <script src="js/requests.js"></script>
         <script src="js/hangman.js"></script>
+        <script src="js/app-functions.js"></script>
         <script src="js/game-functions.js"></script>
         <script src="js/index.js"></script>
     </body>
