@@ -1,4 +1,4 @@
-const previousData = fetchGameData()
+const previousData = JSON.parse(localStorage.getItem('game'))
 
 // If there is a game already saved in localStorage
 if (previousData) {
@@ -17,10 +17,17 @@ const formInputs = createGameForm.elements
 
 // Form for game setup submit handler
 formInputs.startGame.addEventListener('click', (e) => {
-    e.preventDefault()
-    newGame.difficulty = formInputs.difficulty.value
-    newGame.playerName = formInputs.playerName.value
 
-    // Configure the game before redirection and save
-    createGame(newGame)
+    if (/^[A-Za-z]/.test(formInputs.playerName.value)) {
+        e.preventDefault()
+        
+        newGame.difficulty = formInputs.difficulty.value
+        newGame.playerName = formInputs.playerName.value
+        // Configure the game before redirection and save
+        createGame(newGame)
+    } else {
+        e.preventDefault()
+        
+        alert('You must enter a valid player name')
+    }
 })

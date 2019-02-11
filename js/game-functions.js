@@ -31,7 +31,7 @@ const createGame = (game) => {
     })
 }
 
-const configureRounds = (rounds) => {
+const configureRounds = (rounds, difficulty) => {
     let hangmanRounds
     // If Hangman rounds have been previously configured to the hangman object
     if (rounds.every(round => Array.isArray(round.word))) { // Check if every round.word is an array
@@ -48,7 +48,7 @@ const configureRounds = (rounds) => {
         hangmanRounds = rounds.map(puzzleWord => {
             const hangmanRound = new Hangman(puzzleWord)
             let guessCount
-            switch (game.difficulty) {
+            switch (difficulty) {
                 case 'easy':
                     guessCount = puzzleWord.length
                     break;
@@ -107,14 +107,16 @@ const getLetterGuessRate = (rounds) => {
 const renderGameDOM = (currentRound, game) => {
     const nextRoundBtn = document.querySelector('#next-round')
     nextRoundBtn.style.display = "none"
+    nextRoundBtn.className = 'next-round-btn'
 
     const roundNumberEl = document.querySelector('#round-number')
     const difficultyEl = document.querySelector('#game-difficulty')
 
     roundNumberEl.textContent = getRoundNumberMessage(game)
     difficultyEl.textContent = `Difficulty: ${game.difficulty}`
+    difficultyEl.className = game.difficulty
 
-    // Render the individual round
+    // Render the individual round's puzzle
     currentRound.renderRoundDOM()
 
     // Boolean to check if the current round is the last round
@@ -123,10 +125,35 @@ const renderGameDOM = (currentRound, game) => {
 
     if (gameOver) {
 
+        game.letterGuessRate = getLetterGuessRate(game.rounds)
+        game.roundWinRate = getRoundWinRate(game.rounds)
+        saveGame(game)
+
         showModal()
         const gameOverMsg = document.querySelector('#final-message')
-        gameOverMsg.textContent = `${game.playerName} guessed ${getRoundWinRate(game.rounds)}% of the words and ${getLetterGuessRate(game.rounds)}% of letters!`
-        
+        const nextActionBtn = document.querySelector('#next-action')
+        game.LetterGuessRate = getLetterGuessRate(game.rounds)
+        gameOverMsg.textContent = `${game.playerName} guessed ${game.roundWinRate}% of the words and ${game.letterGuessRate}% of letters!`
+        nextActionBtn.onclick = () => {
+            const leaderboard = JSON.parse(localStorage.getItem('leaderboard'))
+            // if there is not leaderboard in localstorage 
+            if (!leaderboard) {
+                const newLeaderboard = [game]
+                // Set the leaderboard to localStorage
+                localStorage.setItem('leaderboard', JSON.stringify(newLeaderboard))
+                // Current game is over and saved on the leaderboard
+                resetGame()
+                location.assign('/leaderboard.html')
+            } else {
+                // Add game to leaderboard and save
+                leaderboard.push(game)
+                localStorage.setItem('leaderboard' ,JSON.stringify(leaderboard))
+                // Current game is over and saved on the leaderboard
+                resetGame()
+                location.assign('/leaderboard.html')
+            }
+        }
+
     } else if (currentRoundOver) {
         nextRoundBtn.style.display = "block"
     }  

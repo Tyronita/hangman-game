@@ -17,7 +17,7 @@
                 <div id="difficulty">
                     Difficulty:
                     <label class="easy">
-                        Easy<input type="radio" value="easy" name="difficulty" checked="true">
+                        Easy<input type="radio" value="easy" name="difficulty" checked="true" required pattern="">
                     </label>
                     <label class="medium">
                         Medium<input type="radio" value="medium" name="difficulty">
@@ -41,7 +41,7 @@
                     <p>Currently there is a game in process. Do you want to finish the game?</p>
                     <div class="options">
                         <button onclick="resetGame()" class="closeModal">&times;</button>
-                        <button type="submit" onclick="location.assign('/game.html')" class="closeModal">&#10004</button>
+                        <button type="submit" onclick="location.assign('/game.html')" class="closeModal">&#10004;</button>
                     </div>
                 </div>
             </section>

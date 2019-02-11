@@ -54,20 +54,32 @@ class Hangman {
 
         const puzzles = document.querySelector('#puzzles')
         const guesses = document.querySelector('#guesses')
-        const guessedLetters = document.querySelector('#guessed-letters')
-        const guessedLettersList = guessedLetters.children[1]
+        const guessedLettersDOM = document.querySelector('#guessed-letters')
 
-        // rendering the puzzle
-        puzzles.textContent = this.puzzle
+        puzzles.innerHTML = ''
+        // rendering the puzzle letter by letter
+        this.puzzle.split('').forEach((letter) => {
+            const letterEl = document.createElement('span')
+            letterEl.className = 'puzzle-letter'
+
+            letterEl.textContent = letter
+            // If char is space then make it clear with styling
+            if (letter === ' ') {
+                letterEl.style.paddingRight = '10px'
+            }
+
+            puzzles.appendChild(letterEl)
+        })
+
         guesses.textContent = this.statusMessage
 
         // Generating the list of guessed letters
-        guessedLettersList.innerHTML = ''
+        guessedLettersDOM.innerHTML = ''
 
         this.guessedLetters.forEach((letter) => {
-            const listEl = document.createElement('span')
-            listEl.textContent = letter
-            guessedLettersList.appendChild(listEl)
+            const letterEl = document.createElement('span')
+            letterEl.textContent = letter
+            guessedLettersDOM.appendChild(letterEl)
         })
 
     }

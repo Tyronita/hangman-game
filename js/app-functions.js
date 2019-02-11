@@ -29,3 +29,23 @@ const showModal = () => {
         })
     })
 }
+
+const renderLeaderboardDOM = (entries) => {
+    entries.forEach((entry) => {
+        const entryRow = document.createElement('tr')
+        
+        const playerNameCell = document.createElement('td')
+        playerNameCell.textContent = entry.playerName
+        entryRow.appendChild(playerNameCell)
+
+        const wordGuessRateCell = document.createElement('td')
+        wordGuessRateCell.textContent = entry.roundWinRate.concat('%')
+        entryRow.appendChild(wordGuessRateCell)
+
+        const lettersGuessedRateCell = document.createElement('td')
+        lettersGuessedRateCell.textContent = entry.letterGuessRate.concat('%')
+        entryRow.appendChild(lettersGuessedRateCell)
+        // Add Note
+        document.querySelector('tbody').appendChild(entryRow)
+    })
+}

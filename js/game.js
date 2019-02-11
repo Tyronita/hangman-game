@@ -1,12 +1,12 @@
 // Fetches game data from local storage 
-let game = fetchGameData()
+let game = JSON.parse(localStorage.getItem('game'))
 
 if (!game) {
     location.assign('index.html')
 }
 
 // Make the word from every round into a hangman object
-game.rounds = configureRounds(game.rounds) 
+game.rounds = configureRounds(game.rounds, game.difficulty) 
 
 // game.rounds[game.activeRoundNum] - This is an active round
 let activeRound = game.rounds[game.activeRoundNum]
@@ -44,7 +44,7 @@ window.addEventListener('storage', (e) => {
         console.log('Storage change detected in another session')
         saveGame(JSON.parse(e.newValue))
         // Fetches game data from local storage 
-        game = fetchGameData()
+        game = JSON.parse(localStorage.getItem('game'))
 
         if (!game) {
             location.assign('index.html')
@@ -58,7 +58,3 @@ window.addEventListener('storage', (e) => {
         renderGameDOM(activeRound, game)
     }
 })
-
-// Set page styling(in the css) based on game difficulty
-document.querySelector('body').className = game.difficulty
-
